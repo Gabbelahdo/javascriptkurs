@@ -2,7 +2,6 @@
 
 
 
-
 //Testutskrifter
 /*
 console.log( oGameData );
@@ -20,12 +19,37 @@ console.log( oGameData.checkForDraw() );
 */
 
 
+/* Koden nedan (onload) gör det möjligt att på uppstartningen
+av sidan så: Nickname1 redo att skrivas istället för att
+behöva klicka själv,
+*/
+window.onload = function(){
+    document.querySelector('#nick1').focus() 
+}
+
+
+const cellEL = document.querySelectorAll('[data-id]')
 
 /**
  * Globalt objekt som innehåller de attribut som ni skall använda.
  * Initieras genom anrop till funktionern initGlobalObject().
  */
-let oGameData = {};
+/*let oGameData => {
+    
+    let gameField = document.getElementById('#nick2');
+    let nickNamePlayerOne = document.getElementById('#nick1');
+    let nickNamePlayerTwo = document.getElementById('#nick2');
+    let playerOne = document.getElementById('#nick2');
+    let playerTwo = document.getElementById('#nick2');
+    let currentPlayer = document.getElementById('#nick2');
+    let colorPlayerOne = document.getElementById('#nick2');
+    let colorPlayerTwo = document.getElementById('#nick2');
+    let timerEnabled = document.getElementById('#nick2');
+    let timerId = document.getElementById('#nick2');
+
+   
+
+}; */
 
 /**
  * Initerar det globala objektet med de attribut som ni skall använda er av.
@@ -35,7 +59,7 @@ let oGameData = {};
 oGameData.initGlobalObject = function() {
 
     //Datastruktur för vilka platser som är lediga respektive har brickor
-    oGameData.gameField = Array('', '', '', '', '', '', '', '', '');
+    oGameData.gameField = Array.from('', '', '', '', '', '', '', '', '');
     
     /* Testdata för att testa rättningslösning */
     //oGameData.gameField = Array('X', 'X', 'X', '', '', '', '', '', '');
