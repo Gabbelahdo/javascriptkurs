@@ -73,6 +73,11 @@ oGameData.initGlobalObject = function() {
 
 }
 
+
+function gameField(check){
+
+    
+}
 /**
  * Kontrollerar för tre i rad.
  * Returnerar 0 om det inte är någon vinnare, 
@@ -81,7 +86,7 @@ oGameData.initGlobalObject = function() {
  * returnerar 3 om det är oavgjort.
  * Funktionen tar inte emot några värden.
  */
-oGameData.checkForGameOver = function() {
+oGameData.checkForGameOver = function(gameField) {
 
    
 
