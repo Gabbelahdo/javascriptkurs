@@ -25,7 +25,8 @@ behöva klicka själv,
 */
 window.onload = function(){
     document.querySelector('#nick1').focus() 
-}
+    console.log(oGameData.playerOne)
+};
 
 
 const cellEL = document.querySelectorAll('[data-id]')
@@ -34,22 +35,22 @@ const cellEL = document.querySelectorAll('[data-id]')
  * Globalt objekt som innehåller de attribut som ni skall använda.
  * Initieras genom anrop till funktionern initGlobalObject().
  */
-/*let oGameData => {
+let oGameData = {
     
-    let gameField = document.getElementById('#nick2');
-    let nickNamePlayerOne = document.getElementById('#nick1');
-    let nickNamePlayerTwo = document.getElementById('#nick2');
-    let playerOne = document.getElementById('#nick2');
-    let playerTwo = document.getElementById('#nick2');
-    let currentPlayer = document.getElementById('#nick2');
-    let colorPlayerOne = document.getElementById('#nick2');
-    let colorPlayerTwo = document.getElementById('#nick2');
-    let timerEnabled = document.getElementById('#nick2');
-    let timerId = document.getElementById('#nick2');
+     gameField : Array,
+     nickNamePlayerOne : document.getElementById('#nick1'),
+     nickNamePlayerTwo : document.getElementById('#nick2'),
+    playerOne : "X",
+    playerTwo : "O",
+     currentPlayer : "",
+     colorPlayerOne : document.getElementById('#color1'),
+    colorPlayerTwo : document.getElementById('#color2'),
+    timerEnabled : false,
+    timerId: null,
 
    
 
-}; */
+}; 
 
 /**
  * Initerar det globala objektet med de attribut som ni skall använda er av.
