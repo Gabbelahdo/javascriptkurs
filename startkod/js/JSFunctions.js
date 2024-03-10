@@ -8,11 +8,97 @@ av sidan så: Nickname1 redo att skrivas istället för att
 behöva klicka själv,
 */
 
+let oGameData = {
+    
+    gameField : Array('', '', '', '', '', '', '', '', ''),
+    nickNamePlayerOne : document.getElementById('#nick1'),
+    nickNamePlayerTwo : document.getElementById('#nick2'),
+   playerOne : "X",
+   playerTwo : "O",
+    currentPlayer : "",
+    colorPlayerOne : '',
+   colorPlayerTwo : '',
+   timerEnabled : false,
+   timerId: null 
+   
+
+  
+
+}; 
+
 
 window.onload = function(){
     document.querySelector('#nick1').focus() 
     console.log(oGameData.playerOne)
 };
+
+
+document.querySelector('#newGame').addEventListener('click',function(event){
+    
+
+    try {
+
+        let textRefs = this.querySelectorAll('input[type=text]');
+
+        let currentTextRef = null;
+
+        for( let counter =0; counter < textRefs.length; counter++){
+            currentTextRef = textRefs.item(counter);
+
+            if(currentTextRef.value.length === 0){
+
+                throw{elmRef : currentTextRef };
+            }
+        }
+
+
+        //färg väljare, updateras beronde på vad spelarna väljer
+        //hs1 funkar genom att kolla hs1(hue,saturation,lightness)
+        let color1Value = document.getElementById('color1').value;
+        let color2Value = document.getElementById('color2').value;
+
+        oGameData.colorPlayerOne = color1Value ? `hs1(${color1Value},100%, 50%` : `hs1(180, 100%, 50%)`
+        oGameData.colorPlayerTwo = color2Value ? `hs1(${color2Value},100%, 50%` : `hs1(180, 100%, 50%)`;
+
+
+        if (!oGameData.nickNamePlayerOne || !oGameData.nickNamePlayerTwo){
+            throw { errorMsg: 'glöm inte välja nicknames!!!'};
+
+        }
+
+
+
+        //iteration på ifall player one or two inte (!) eller är null skriv ut error
+        if (!oGameData.colorPlayerOne || !oGameData.colorPlayerTwo){
+            throw { errorMsg: 'glöm inte välja färger!!!'};
+        }
+
+        console.log("börja spela");
+
+        return false;
+    } 
+    
+    catch (oError) {
+
+        if(oError.elmRef) {
+            oError.elmRef.focus();
+            document.querySelector('#errorMsg').textContent = 'bruh glöm inte ' + oError.elmRef.getAttribute('placeHolder') + '!'; 
+        }
+
+        else {
+
+            document.querySelector('#errorMsg').textContent = oError.errorMsg;
+        }
+
+
+        return false;
+
+
+
+    }
+});
+
+
 
 
 const boxValue  = document.querySelectorAll('#game-area td')
@@ -24,23 +110,9 @@ console.log(boxValue);
  */
 
 
-let oGameData = {
-    
-     gameField : Array('', '', '', '', '', '', '', '', ''),
-     nickNamePlayerOne : document.getElementById('#nick1'),
-     nickNamePlayerTwo : document.getElementById('#nick2'),
-    playerOne : "X",
-    playerTwo : "O",
-     currentPlayer : "",
-     colorPlayerOne : document.getElementById('#color1'),
-    colorPlayerTwo : document.getElementById('#color2'),
-    timerEnabled : false,
-    timerId: null 
-    
 
-   
 
-}; 
+
 
 
 const vinnandeKombinationer = [
@@ -62,8 +134,6 @@ initializeGame();
 function initializeGame(){
     boxValue.forEach(cell => cell.addEventListener("click", boxClick));
    
-
-
 
 }
 
