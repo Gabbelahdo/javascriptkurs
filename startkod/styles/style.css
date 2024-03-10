@@ -162,6 +162,8 @@ aside img {
         margin-bottom: 1rem;
     }
 
+    
+
     input[type="text"], input[type="color"] {
         width: 100%;
         padding: 0.5rem;
@@ -219,7 +221,7 @@ aside img {
     }
 
     main {
-        width: 50%;
+        width: 0%;
     }
 
     td {
@@ -270,7 +272,8 @@ aside img {
 
 
     .col {
-        margin-bottom: 1rem;
+        margin-bottom: 10rem;
+        
     }
 
     input[type="text"], input[type="color"] {
