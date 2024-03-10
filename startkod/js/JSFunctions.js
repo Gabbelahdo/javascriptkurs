@@ -137,13 +137,20 @@ function initializeGame(){
 
 }
 
-
-
 function boxClick(event) {
 
     const boxTarget = event.target;
-
     console.log(boxTarget);
+
+
+if (!boxValue[boxTarget.id]){
+   boxValue[boxTarget.id] = currentPlayer
+   boxTarget.innerText = currentPlayer
+
+    currentPlayer = currentPlayer == playerOne ? playerTwo : playerOne
+
+}
+
 }
 
 
