@@ -8,7 +8,10 @@ av sidan så: Nickname1 redo att skrivas istället för att
 behöva klicka själv,
 */
 
-let oGameData = {
+let oGameData;
+
+document.addEventListener("DOMContentLoaded",function(){
+ oGameData = {
     
     gameField : Array('', '', '', '', '', '', '', '', ''),
     nickNamePlayerOne : document.getElementById('#nick1'),
@@ -22,9 +25,12 @@ let oGameData = {
    timerId: null 
    
 
-  
+};
 
-}; 
+console.log(oGameData.currentPlayer);
+console.log(oGameData.playerTwo);
+
+}); 
 
 
 window.onload = function(){
@@ -144,14 +150,45 @@ function boxClick(event) {
 
 
 if (!boxValue[boxTarget.id]){
-   boxValue[boxTarget.id] = currentPlayer
-   boxTarget.innerText = currentPlayer
 
-    currentPlayer = currentPlayer == playerOne ? playerTwo : playerOne
+
+    const vinnare = playerHasWon();
+
+    if(vinnare) {
+        console.log(oGameData.currentPlayer + "vinst!");
+    }
+
+    else {
+
+        oGameData.currentPlayer = oGameData.currentPlayer === oGameData.playerOne ? oGameData.playerTwo : oGameData.playerOne;
+        
+    }
+
+    boxValue[boxTarget.id] = oGameData.currentPlayer;
+    boxTarget.innerText = oGameData.currentPlayer;
+
 
 }
 
+
+
+ 
+
+
 }
+
+function playerHasWon(){
+    for (const condition of vinnandeKombinationer) {
+        let[a, b, c] = condition
+    
+        if(boxValue[a] && (boxValue[a]== boxValue[b] && boxValue[a] == boxValue[c])){
+            return[a,b,c]
+        }
+    }
+    return false
+    }
+
+
 
 
 
