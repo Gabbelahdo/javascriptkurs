@@ -12,13 +12,13 @@ function initGlobalObject(){
     oGameData = {
     
         gameField : Array('', '', '', '', '', '', '', '', ''),
-        nickNamePlayerOne : document.getElementById('div-in-form nick1'),
-        nickNamePlayerTwo : document.getElementById('div-in-form nick2'),
+        nickNamePlayerOne : document.getElementById('nick1'),
+        nickNamePlayerTwo : document.getElementById('nick2'),
         playerOne : "X",
         playerTwo : "O",
         currentPlayer : "",
-        colorPlayerOne : document.getElementById('div-in-form color1'),
-        colorPlayerTwo : document.getElementById('div-in-form color2'),
+        colorPlayerOne : document.getElementById('color1'),
+        colorPlayerTwo : document.getElementById('color2'),
         timerEnabled : false,
         timerId: null,
         initGlobalObject: function(){},
@@ -67,6 +67,36 @@ function initGlobalObject(){
             return 0;                         // 0 blir det ifall ingen vinner
 
 
+        },
+
+
+        ValidateForm: function(){
+
+    
+    
+            try{
+        
+            if(document.getElementById('nick1').value.length < 5 || document.getElementById('nick2').value.length < 5){
+                throw "namnen måste uppfylla minst 5 symboler/bokstav";
+            }
+            
+                else if (document.getElementById('nick1').value === document.getElementById('nick2').value){
+                    throw "namnen måste vara olika!"
+                }
+                
+                else if (document.getElementById('color1').value === document.getElementById('color2').value || document.getElementById('color1').value === "#FFFFFF" || document.getElementById('color1').value === "#000000" || document.getElementById('color2').value === "#FFFFFF" || document.getElementById('color2').value === "#000000"){
+                    throw "färgerna skall inte va lika samt inte svart/vit"
+                }
+            else{dang()}
+        
+            
+        } catch (error) {
+            document.getElementById('errorMsg').textContent = error;
+            
+         
+            
+        }
+        
         }
     
    
@@ -91,11 +121,15 @@ window.addEventListener('load', ()=>{
 
     oGameData.initGlobalObject();
 
-    document.getElementById('div-with-a').addEventListener('click', (event)=> {
-    
-        event.preventDefault();
 
-        ValidateForm();
+
+    document.getElementById('game-area').classList.add('d-none'); //lägger game-area(spelplanen) i d-none så att den inte vissas förrän validateForm körs utan problem
+
+    document.getElementById('newGame').addEventListener('click', (event)=> {  //event som gäller på klicket av "starta spelet!" så ska validateForm anropas
+    
+        event.preventDefault(); //den förhindrar formuläret från att skickas till servern antingen innan knappen tryckts eller när namn & färgvilkoren inte stämmer.
+
+        oGameData.ValidateForm();
     
     
     
@@ -104,29 +138,58 @@ window.addEventListener('load', ()=>{
     
 });
 
-function ValidateForm(){
 
 
-    try{
 
-    if(document.getElementById('oGameData.nickNamePlayerOne').value.length < 5 || document.getElementById('oGameData.nickNamePlayerTwo') < 5){
-        throw "namnen måste uppfylla minst 5 symboler/bokstav";
+
+function dang(){  // funktionen sker efter att "starta spelet!" knappen klickas och inga fel uppstår
+
+    //för att vara säker på att nicknamsen följer med genom anropandet
+    console.log(oGameData.nickNamePlayerOne);
+    console.log(oGameData.nickNamePlayerTwo);
+
+
+    //koden nedan gör det möjjligt att gömma listan/formen in i d-none
+    document.getElementById('div-in-form').classList.add('d-none');
+
+    document.getElementById('game-area').classList.remove('d-none');
+    
+    
+    document.getElementById('errorMsg').textContent = ''; //tömer error fältet under/inom h1 där det kommer upp felmedelanden
+    
+    //här samlas textfälten och färgväljarens värden
+    oGameData.nickNamePlayerOne = document.getElementById('nick1').value;
+    oGameData.nickNamePlayerTwo = document.getElementById('nick2').value;
+    oGameData.colorPlayerOne = document.getElementById('color1').value;
+    oGameData.colorPlayerTwo = document.getElementById('color2').value;
+    
+
+    //väljer alla td element och itererar igenom dem och lägger bakgrunden av dem till vit
+    document.querySelectorAll('#game-area td').forEach(function(td){
+        td.textContent= '';
+        td.style.backgroundColor = 'white';
+    });
+    //Här deklarerar två variabler
+    let playerChar;
+    let playerName;
+
+
+    //koden under väljer vem som börjar genom att slumpa ett tal mellan 0-1, är den under 0,5 så börjar playerOne, över 0,5 så blir det playerTwo's tur
+    //i if satsen är vilkoret att PlayerOne börjar om det är mindre än 0,5
+    if (Math.random() < 0.5){
+        playerChar = oGameData.playerOne;
+        playerName = oGameData.nickNamePlayerOne;
+        oGameData.currentPlayer = oGameData.playerOne;
+    }
+    //annars om det inte är mindre än 0,5 så börjar playerTwo
+    else {
+        playerChar = oGameData.playerTwo;
+        playerName = oGameData.nickNamePlayerTwo;
+        oGameData.currentPlayer = oGameData.playerTwo
     }
     
-        else if (document.getElementById('oGameData.nickNamePlayerOne').value === document.getElementById('oGameData.nickNamePlayerTwo').value){
-            throw "namnen måste vara olika!"
-        }
-        
-        else if (document.getElementById('oGameData.colorPlayerOne').value === document.getElementById('oGameData.colorPlayerTwo').value || document.getElementById('oGameData.colorPlayerOne').value === "#FFFFFF" || document.getElementById('oGameData.colorPlayerOne').value === "#000000" || document.getElementById('oGameData.colorPlayerTwo').value === "#FFFFFF" || document.getElementById('oGameData.colorPlayerTwo').value === "#000000"){
-            throw "färgerna skall inte va lika samt inte svart/vit"
-        }
-
-        initiateGame();
     
-} catch (error) {
-    document.getElementById('errorMsg').textContent = error;
-}
-
+    document.querySelector('.jumbotron h1').textContent = "Aktuell spelare är" + playerName; //gör det möjligt för spelarna att se vems tur det är genom att kolla på h1
 }
 
 
@@ -147,7 +210,8 @@ const vinnandeKombinationer = [
 ];
 
 
-initiateGame();
+
+
 
 function initiateGame(){
     boxValue.forEach(cell => cell.addEventListener("click", boxClick));
