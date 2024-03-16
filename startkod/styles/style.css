@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Madimi+One&display=swap');
 
 * {
     box-sizing: border-box;
@@ -6,7 +6,7 @@
   
 
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: "Madimi One", sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
@@ -41,8 +41,10 @@ aside img {
     td {
         width: 200px;
         height: 200px;
-        border: 1px solid darkgray;
+        border: 1px solid rgb(149, 25, 25);
         align-self: center;
+        font-size: 150px;
+        text-align: center;
     }
 
     table {
@@ -50,8 +52,10 @@ aside img {
     }
 
     .col {
-        width: 49%;
+        width: 50%;
         margin-right: 2%;
+        display: ruby;
+        
     }
    
     .jumbotron {
@@ -69,7 +73,7 @@ aside img {
         display: flex;
         flex-direction: column;
         padding: 1rem;
-        border: 1px solid #ccc; /* Ram runt formuläret */
+        border: 1px solid #a73030; /* Ram runt formuläret */
         border-radius: 0.5rem; /* Runda hörn för ramen */
         box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.1); /* Skugga för formuläret */
         margin-bottom: 20px;
@@ -85,17 +89,21 @@ aside img {
     }
 
     input[type="text"]:focus, input[type="color"]:focus {
-        border-color: blue;
+        border-color: rgb(60, 65, 52);
         outline: none;
     }
-
+        
     
     #newGame {
+        
+        display: inline-flex;
         text-decoration: none;
         color: white;
-        background-color: #2893f6;
+        background-color: #1d0808;
         padding: 6px;
         border-radius: 0.3rem;
+        
+        
     }
 
     #div-with-a {
@@ -104,7 +112,7 @@ aside img {
 
     #newGame:hover {
         background-color: white;
-        color: #2893f6;
+        color: #521e1e;
         transition: 0.3s;
     }
 

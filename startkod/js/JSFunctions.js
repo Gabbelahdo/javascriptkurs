@@ -12,13 +12,13 @@ function initGlobalObject(){
     oGameData = {
     
         gameField : Array('', '', '', '', '', '', '', '', ''),
-        nickNamePlayerOne : document.getElementById('#nick1'),
-        nickNamePlayerTwo : document.getElementById('#nick2'),
+        nickNamePlayerOne : document.getElementById('#div-in-form nick1'),
+        nickNamePlayerTwo : document.getElementById('#div-in-form nick2'),
         playerOne : "X",
         playerTwo : "O",
         currentPlayer : "",
-        colorPlayerOne : '',
-        colorPlayerTwo : '',
+        colorPlayerOne : document.getElementById("#div-in-form color1"),
+        colorPlayerTwo : document.getElementById("#div-in-form color2"),
         timerEnabled : false,
         timerId: null,
         initGlobalObject: function(){},
@@ -35,7 +35,7 @@ function initGlobalObject(){
                 }
             }
 
-                  //for loopen ovan med variabeln raden kollar om det är en vinst på det horizontella hållet av raden, när den hittar vinst visar den vinnande spe
+                  //for loopen ovan med variabeln raden kollar om det är en vinst på det horizontella hållet av raden, när den hittar vinst visar den vinnande spelare (retunera 1 eller 2)
 
 
             for (let kolumner = 0; kolumner < 3; kolumner++) {
@@ -88,7 +88,54 @@ behöva klicka själv,
 window.onload = function(){
     document.querySelector('#nick1').focus() 
     console.log(oGameData.playerOne)
+    oGameData.initGlobalObject();
+
+    var styleElement = document.querySelector("style");
+    var styleSheet = styleElement.sheet;
+    //document.getElementById("#game-area").classList.add(" d-none");
+
+
+    var newGameLink = document.querySelector('#div-with-a #newGame')
+
+    newGameLink.addEventListener("click",function(){
+
+        try{
+            ValidateForm()
+        } catch (error){
+            document.getElementById("errorMsg").textContent = error.message;
+        }
+
+
+    });
+
+    
 };
+
+function ValidateForm(){
+
+    var styleElement = document.querySelector("style");
+    var styleSheet = styleElement.sheet;
+
+    if(oGameData.nickNamePlayerOne.length < 5 || oGameData.nickNamePlayerTwo < 5){
+        throw Error("namnen måste uppfylla minst 5 symboler/bokstav");
+    }
+    
+        else if (oGameData.nickNamePlayerOne === oGameData.nickNamePlayerTwo){
+            throw Error("namnen måste vara olika!")
+        }
+        
+        else if (oGameData.colorPlayerOne === oGameData.colorPlayerTwo || oGameData.colorPlayerOne === "#FFFFFF" || oGameData.colorPlayerOne === "#000000" ||oGameData.colorPlayerTwo === "#FFFFFF" ||oGameData.colorPlayerTwo === "#000000"){
+            throw Error("färgerna skall inte va lika samt inte svart/vit")
+        }
+
+        else {
+            styleSheet.insertRule("#game-area {display: block !important;}", styleSheet.cssRules.length)
+            document.getElementById("errorMsg").textContent = "";
+        }
+    
+}
+
+
 
 
 
@@ -148,6 +195,7 @@ function boxClick(event) {
     console.log(boxTarget);
 
 }
+
 
 
 
