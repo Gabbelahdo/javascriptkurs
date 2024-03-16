@@ -12,13 +12,13 @@ function initGlobalObject(){
     oGameData = {
     
         gameField : Array('', '', '', '', '', '', '', '', ''),
-        nickNamePlayerOne : document.getElementById('#div-in-form nick1'),
-        nickNamePlayerTwo : document.getElementById('#div-in-form nick2'),
+        nickNamePlayerOne : document.getElementById('div-in-form nick1'),
+        nickNamePlayerTwo : document.getElementById('div-in-form nick2'),
         playerOne : "X",
         playerTwo : "O",
         currentPlayer : "",
-        colorPlayerOne : document.getElementById("#div-in-form color1"),
-        colorPlayerTwo : document.getElementById("#div-in-form color2"),
+        colorPlayerOne : document.getElementById('div-in-form color1'),
+        colorPlayerTwo : document.getElementById('div-in-form color2'),
         timerEnabled : false,
         timerId: null,
         initGlobalObject: function(){},
@@ -43,6 +43,7 @@ function initGlobalObject(){
 
                     return this.gameField[kolumner] === this.playerOne ? 1 : 2;                   
                 }
+
             }
                      //for loopen ovan med variabeln kolumner kollar om det är en vinst på det vertikala hållet av kolumnerna, när den hittar vinst visar den vinnande spe
                   
@@ -74,6 +75,7 @@ function initGlobalObject(){
 
     console.log(oGameData.currentPlayer);
     console.log(oGameData.playerTwo);
+    console.log(oGameData.playerOne);
 
 } 
 
@@ -85,54 +87,46 @@ av sidan så: Nickname1 redo att skrivas istället för att
 behöva klicka själv,
 */
 
-window.onload = function(){
-    document.querySelector('#nick1').focus() 
-    console.log(oGameData.playerOne)
+window.addEventListener('load', ()=>{
+
     oGameData.initGlobalObject();
 
-    var styleElement = document.querySelector("style");
-    var styleSheet = styleElement.sheet;
-    //document.getElementById("#game-area").classList.add(" d-none");
+    document.getElementById('div-with-a').addEventListener('click', (event)=> {
+    
+        event.preventDefault();
 
-
-    var newGameLink = document.querySelector('#div-with-a #newGame')
-
-    newGameLink.addEventListener("click",function(){
-
-        try{
-            ValidateForm()
-        } catch (error){
-            document.getElementById("errorMsg").textContent = error.message;
-        }
-
-
+        ValidateForm();
+    
+    
+    
     });
 
     
-};
+});
 
 function ValidateForm(){
 
-    var styleElement = document.querySelector("style");
-    var styleSheet = styleElement.sheet;
 
-    if(oGameData.nickNamePlayerOne.length < 5 || oGameData.nickNamePlayerTwo < 5){
-        throw Error("namnen måste uppfylla minst 5 symboler/bokstav");
+    try{
+
+    if(document.getElementById('oGameData.nickNamePlayerOne').value.length < 5 || document.getElementById('oGameData.nickNamePlayerTwo') < 5){
+        throw "namnen måste uppfylla minst 5 symboler/bokstav";
     }
     
-        else if (oGameData.nickNamePlayerOne === oGameData.nickNamePlayerTwo){
-            throw Error("namnen måste vara olika!")
+        else if (document.getElementById('oGameData.nickNamePlayerOne').value === document.getElementById('oGameData.nickNamePlayerTwo').value){
+            throw "namnen måste vara olika!"
         }
         
-        else if (oGameData.colorPlayerOne === oGameData.colorPlayerTwo || oGameData.colorPlayerOne === "#FFFFFF" || oGameData.colorPlayerOne === "#000000" ||oGameData.colorPlayerTwo === "#FFFFFF" ||oGameData.colorPlayerTwo === "#000000"){
-            throw Error("färgerna skall inte va lika samt inte svart/vit")
+        else if (document.getElementById('oGameData.colorPlayerOne').value === document.getElementById('oGameData.colorPlayerTwo').value || document.getElementById('oGameData.colorPlayerOne').value === "#FFFFFF" || document.getElementById('oGameData.colorPlayerOne').value === "#000000" || document.getElementById('oGameData.colorPlayerTwo').value === "#FFFFFF" || document.getElementById('oGameData.colorPlayerTwo').value === "#000000"){
+            throw "färgerna skall inte va lika samt inte svart/vit"
         }
 
-        else {
-            styleSheet.insertRule("#game-area {display: block !important;}", styleSheet.cssRules.length)
-            document.getElementById("errorMsg").textContent = "";
-        }
+        initiateGame();
     
+} catch (error) {
+    document.getElementById('errorMsg').textContent = error;
+}
+
 }
 
 
@@ -153,9 +147,9 @@ const vinnandeKombinationer = [
 ];
 
 
-initializeGame();
+initiateGame();
 
-function initializeGame(){
+function initiateGame(){
     boxValue.forEach(cell => cell.addEventListener("click", boxClick));
 }
 
