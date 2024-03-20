@@ -215,7 +215,45 @@ const vinnandeKombinationer = [
 
 function initiateGame(){
     boxValue.forEach(cell => cell.addEventListener("click", boxClick));
+
+    
+  
+  
+  
+  
+  
+  
+    boxValue.forEach(cell => cell.addEventListener("click", excecuteMove));
 }
+
+
+
+function excecuteMove(event){
+ 
+    const boxTarget = event.target;
+const checkTd = parseInt(boxTarget.getAttribute('data-id'));
+
+if(gameField[checkTd] === ""){
+    
+    
+    oGameData.gameField[checkTd] = oGameData.currentPlayer;
+
+    boxTarget.style.backgroundColor = oGameData.currentPlayer === oGameData.playerOne ? oGameData.colorPlayerOne.value : oGameData.colorPlayerTwo.value;
+
+
+    boxTarget.innerText = oGameData.currentPlayer;
+
+    oGameData.currentPlayer = (oGameData.currentPlayer === oGameData.playerOne) ? oGameData.playerTwo : oGameData.playerOne;
+
+}
+else{
+    
+}
+
+
+}
+
+
 
 function boxClick(event) {
     // nedan för att bestämma spelare, ifall currentPlayer är playerOne retunera playerTwo annars ifall currentPlayer är tom retunera playerOne annars PlayerOne
