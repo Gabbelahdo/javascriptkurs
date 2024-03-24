@@ -196,7 +196,7 @@ function dang(){  // funktionen sker efter att "starta spelet!" knappen klickas 
 
 
 
-const boxValue  = document.querySelectorAll('#game-area td')
+const boxValue  = document.querySelectorAll('#game-area td');
 console.log(boxValue);
 
 
@@ -214,26 +214,19 @@ const vinnandeKombinationer = [
 
 
 function initiateGame(){
-    boxValue.forEach(cell => cell.addEventListener("click", boxClick));
+    boxValue.forEach(cell => cell.addEventListener("click", executeMove));
+  //document.getElementById('game-area').addEventListener('click', executeMove);
 
-    
-  
-  
-  
-  
-  
-  
-    boxValue.forEach(cell => cell.addEventListener("click", excecuteMove));
 }
 
 
 
-function excecuteMove(event){
+/*function executeMove(event){
  
     const boxTarget = event.target;
 const checkTd = parseInt(boxTarget.getAttribute('data-id'));
 
-if(gameField[checkTd] === ""){
+if(oGameData.gameField[checkTd] === ""){
     
     
     oGameData.gameField[checkTd] = oGameData.currentPlayer;
@@ -248,23 +241,27 @@ if(gameField[checkTd] === ""){
 }
 else{
     
+console.log("den här rutan är upptagen");
+
 }
 
 
-}
+}*/
 
 
 
-function boxClick(event) {
-    // nedan för att bestämma spelare, ifall currentPlayer är playerOne retunera playerTwo annars ifall currentPlayer är tom retunera playerOne annars PlayerOne
-    oGameData.currentPlayer = oGameData.currentPlayer === oGameData.playerOne ? oGameData.playerTwo : oGameData.currentPlayer === "" ? oGameData.playerOne : oGameData.playerOne
+function executeMove(event) {
+   
 // deklarerar konstanten boxTarget som är event.target dvs att den riktar sig mot elementet som skapade händelsen
+const cellvarde = parseInt(boxTarget.getAttribute('data-id'));
     const boxTarget = event.target;
     if (boxTarget.innerText === ""){
 
-        
+         // nedan för att bestämma spelare, ifall currentPlayer är playerOne retunera playerTwo annars ifall currentPlayer är tom retunera playerOne annars PlayerOne
+    oGameData.currentPlayer = oGameData.currentPlayer === oGameData.playerOne ? oGameData.playerTwo : oGameData.currentPlayer === "" ? oGameData.playerOne : oGameData.playerOne;
         boxValue[boxTarget.id] = oGameData.currentPlayer;
         oGameData.gameField[parseInt(boxTarget.getAttribute('data-id'))] = oGameData.currentPlayer;
+        boxTarget.style.backgroundColor = oGameData.currentPlayer === oGameData.playerOne ? oGameData.colorPlayerOne.value : oGameData.colorPlayerTwo.value;
         boxTarget.innerText = oGameData.currentPlayer;
 
         //else ifall boxen bär på värde redan
