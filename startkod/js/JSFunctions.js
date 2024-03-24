@@ -193,13 +193,23 @@ function executeMove (event) {
    
     // deklarerar konstanten boxTarget som är event.target dvs att den riktar sig mot elementet som skapade händelsen
     const klickadCell = event.target;
-    if (klickadCell.tagName === 'TD' && !klickadCell.textContent) {
+    if (klickadCell.tagName === 'TD') {
         const cellId = klickadCell.getAttribute('data-id');
+    if  (oGameData.gameField[cellId] === ''){
         oGameData.gameField[cellId] = oGameData.currentPlayer;
-        klickadCell.textContent = oGameData.currentPlayer;
-        klickadCell.classList.add(`player-${oGameData.currentPlayer.toLowerCase()}`);
+
+    if  (oGameData.currentPlayer === oGameData.playerOne){
+        klickadCell.textContent = oGameData.playerOne;
+        klickadCell.style.backgroundColor = oGameData.colorPlayerOne;
+        oGameData.currentPlayer = oGameData.playerTwo;
+
+    }else if(klickadCell.textContent = oGameData.playerTwo){
+           klickadCell.style.backgroundColor = oGameData.colorPlayerTwo;
+           oGameData.currentPlayer = oGameData.playerOne;
+        
+        
+        oGameData.currentPlayer = document.querySelector('#jumbotron h1')
         oGameData.currentPlayer = oGameData.currentPlayer === oGameData.playerOne ? oGameData.playerTwo : oGameData.currentPlayer === "" ? oGameData.playerOne : oGameData.playerOne;
-        document.getElementById('player-turn').textContent = `Spelare ${oGameData.currentPlayer} tur`;
 
         const spelSlut = oGameData.checkForGameOver();
 
@@ -215,9 +225,11 @@ function executeMove (event) {
                 SpelResultat.textContent = `oavgjort!`;
             }
             document.getElementById('game-area').classList.add('d-none');
+            oGameData.initGlobalObject();
         }
     }
-
+}
+    }
 }
 
 window.addEventListener('load', ()=>{
