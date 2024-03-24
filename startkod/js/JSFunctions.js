@@ -166,10 +166,11 @@ function dang(){  // funktionen sker efter att "starta spelet!" knappen klickas 
     }
     
     
-    document.querySelector('.jumbotron h1').textContent = "Aktuell spelare är" + playerName; //gör det möjligt för spelarna att se vems tur det är genom att kolla på h1
+    document.querySelector('.jumbotron h1').textContent = "Aktuell spelare är" ${oGameData.currentPlayer === oGameData.playerOne ? oGameData.nickNamePlayerOne : oGameData.nickNamePlayerTwo};
+    document.querySelector('.jumbotron h1').textContent = "Aktuell spelare är"   ${playerName}; //gör det möjligt för spelarna att se vems tur det är genom att kolla på h1
 }
 
-
+SpelResultat.textContent = `Spelare ${oGameData.currentPlayer} vinner!`
 
 
 
@@ -203,7 +204,7 @@ function executeMove (event) {
         klickadCell.style.backgroundColor = oGameData.colorPlayerOne;
         oGameData.currentPlayer = oGameData.playerTwo;
 
-    }else if(klickadCell.textContent = oGameData.playerTwo){
+    } else {klickadCell.textContent = oGameData.playerTwo
            klickadCell.style.backgroundColor = oGameData.colorPlayerTwo;
            oGameData.currentPlayer = oGameData.playerOne;
         
@@ -235,6 +236,7 @@ function executeMove (event) {
 window.addEventListener('load', ()=>{
 
     oGameData.initGlobalObject();
+
 
 
 
