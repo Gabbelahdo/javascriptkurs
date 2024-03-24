@@ -19,6 +19,8 @@ function initGlobalObject(){
         currentPlayer : "",
         colorPlayerOne : document.getElementById('color1'),
         colorPlayerTwo : document.getElementById('color2'),
+        boxValue  : document.querySelectorAll('#game-area td'),
+       
         timerEnabled : false,
         timerId: null,
         initGlobalObject: function(){},
@@ -99,6 +101,9 @@ function initGlobalObject(){
         
         }
     
+         
+
+  
    
 
     };
@@ -109,38 +114,13 @@ function initGlobalObject(){
 
 } 
 
-
-
-
-/* Koden nedan (onload) gör det möjligt att på uppstartningen
-av sidan så: Nickname1 redo att skrivas istället för att
-behöva klicka själv,
-*/
-
-window.addEventListener('load', ()=>{
-
-    oGameData.initGlobalObject();
-
-
-
-    document.getElementById('game-area').classList.add('d-none'); //lägger game-area(spelplanen) i d-none så att den inte vissas förrän validateForm körs utan problem
-
-    document.getElementById('newGame').addEventListener('click', (event)=> {  //event som gäller på klicket av "starta spelet!" så ska validateForm anropas
+function initiateGame (){
+    oGameData.boxValue;
+    console.log(oGameData.boxValue);
+    oGameData.boxValue.forEach(cell => cell.addEventListener("click", executeMove));
     
-        event.preventDefault(); //den förhindrar formuläret från att skickas till servern antingen innan knappen tryckts eller när namn & färgvilkoren inte stämmer.
-
-        oGameData.ValidateForm();
-    
-    
-    
-    });
-
-    
-});
-
-
-
-
+    //document.getElementById('game-area').addEventListener('click', executeMove);
+}
 
 function dang(){  // funktionen sker efter att "starta spelet!" knappen klickas och inga fel uppstår
 
@@ -169,21 +149,18 @@ function dang(){  // funktionen sker efter att "starta spelet!" knappen klickas 
         td.textContent= '';
         td.style.backgroundColor = 'white';
     });
-    //Här deklarerar två variabler
-    let playerChar;
+    //Här deklarerar en variabel
     let playerName;
 
 
     //koden under väljer vem som börjar genom att slumpa ett tal mellan 0-1, är den under 0,5 så börjar playerOne, över 0,5 så blir det playerTwo's tur
     //i if satsen är vilkoret att PlayerOne börjar om det är mindre än 0,5
     if (Math.random() < 0.5){
-        playerChar = oGameData.playerOne;
         playerName = oGameData.nickNamePlayerOne;
         oGameData.currentPlayer = oGameData.playerOne;
     }
     //annars om det inte är mindre än 0,5 så börjar playerTwo
     else {
-        playerChar = oGameData.playerTwo;
         playerName = oGameData.nickNamePlayerTwo;
         oGameData.currentPlayer = oGameData.playerTwo
     }
@@ -196,9 +173,6 @@ function dang(){  // funktionen sker efter att "starta spelet!" knappen klickas 
 
 
 
-const boxValue  = document.querySelectorAll('#game-area td');
-console.log(boxValue);
-
 
 //De vinnande kominationerna gjort som 2d array vilket täcker horizontel,Vertical och båda diagonalerna
 const vinnandeKombinationer = [
@@ -209,15 +183,72 @@ const vinnandeKombinationer = [
     ['X', 'O', 'X', '0', 'X', 'O', 'O', 'X', 'O']
 ];
 
+/* Koden nedan (onload) gör det möjligt att på uppstartningen
+av sidan så: Nickname1 redo att skrivas istället för att
+behöva klicka själv,
+*/
 
 
+function executeMove (event) {
+   
+    // deklarerar konstanten boxTarget som är event.target dvs att den riktar sig mot elementet som skapade händelsen
+    const klickadCell = event.target;
+    if (klickadCell.tagName === 'TD' && !klickadCell.textContent) {
+        const cellId = klickadCell.getAttribute('data-id');
+        oGameData.gameField[cellId] = oGameData.currentPlayer;
+        klickadCell.textContent = oGameData.currentPlayer;
+        klickadCell.classList.add(`player-${oGameData.currentPlayer.toLowerCase()}`);
+        oGameData.currentPlayer = oGameData.currentPlayer === oGameData.playerOne ? oGameData.playerTwo : oGameData.currentPlayer === "" ? oGameData.playerOne : oGameData.playerOne;
+        document.getElementById('player-turn').textContent = `Spelare ${oGameData.currentPlayer} tur`;
 
+        const spelSlut = oGameData.checkForGameOver();
 
-function initiateGame(){
-    boxValue.forEach(cell => cell.addEventListener("click", executeMove));
-  //document.getElementById('game-area').addEventListener('click', executeMove);
+        if (spelSlut) {
+            oGameData.boxValue.forEach(cell => cell.removeEventListener('click', executeMove));
+            const spelSlutsLista = document.getElementById('game-over');
+            spelSlutsLista.classList.remove('d-none');
+            const SpelResultat = document.getElementById('game-result');
+            if (spelSlut === 1 || spelSlut === 2) {
+                SpelResultat.textContent = `Spelare ${oGameData.currentPlayer} vinner!`
+            
+            }else if (spelSlut === 3){
+                SpelResultat.textContent = `oavgjort!`;
+            }
+            document.getElementById('game-area').classList.add('d-none');
+        }
+    }
 
 }
+
+window.addEventListener('load', ()=>{
+
+    oGameData.initGlobalObject();
+
+
+
+    document.getElementById('game-area').classList.add('d-none'); //lägger game-area(spelplanen) i d-none så att den inte vissas förrän validateForm körs utan problem
+
+    document.getElementById('newGame').addEventListener('click', (event)=> {  //event som gäller på klicket av "starta spelet!" så ska validateForm anropas
+    
+        event.preventDefault(); //den förhindrar formuläret från att skickas till servern antingen innan knappen tryckts eller när namn & färgvilkoren inte stämmer.
+
+        oGameData.ValidateForm();
+    
+    
+    
+    });
+
+    initiateGame();
+    
+});
+
+
+
+
+
+
+
+
 
 
 
@@ -250,44 +281,7 @@ console.log("den här rutan är upptagen");
 
 
 
-function executeMove(event) {
-   
-// deklarerar konstanten boxTarget som är event.target dvs att den riktar sig mot elementet som skapade händelsen
-const cellvarde = parseInt(boxTarget.getAttribute('data-id'));
-    const boxTarget = event.target;
-    if (boxTarget.innerText === ""){
 
-         // nedan för att bestämma spelare, ifall currentPlayer är playerOne retunera playerTwo annars ifall currentPlayer är tom retunera playerOne annars PlayerOne
-    oGameData.currentPlayer = oGameData.currentPlayer === oGameData.playerOne ? oGameData.playerTwo : oGameData.currentPlayer === "" ? oGameData.playerOne : oGameData.playerOne;
-        boxValue[boxTarget.id] = oGameData.currentPlayer;
-        oGameData.gameField[parseInt(boxTarget.getAttribute('data-id'))] = oGameData.currentPlayer;
-        boxTarget.style.backgroundColor = oGameData.currentPlayer === oGameData.playerOne ? oGameData.colorPlayerOne.value : oGameData.colorPlayerTwo.value;
-        boxTarget.innerText = oGameData.currentPlayer;
-
-        //else ifall boxen bär på värde redan
-    } else {
-        console.log("boxen bär redan värde!.")
-    }
-
-
-    //deklarerar konstanten vinnare som refererar till funktionen Spelarevann
-    const vinnare = oGameData.checkForGameOver();
-        
-    if(vinnare === 1 || vinnare === 2) { //ifall checkForGameOver retunerar 1 eller 2 (spelare 1 eller spelare 2) så console loggas respektiv siffra
-        console.log(vinnare);
-    }
-
-    else if (vinnare === 3){  //ifall ingen vinnare retuneras från checkForGameOver så console loggas siffran 3
-        console.log(vinnare)
-    }
-    
-
-    console.log("TEST:", boxValue)
-    console.log("TID:", boxTarget.getAttribute('data-id'))
-    console.log("ARRAY:", oGameData.gameField)
-    console.log(boxTarget);
-
-}
 
 
 
@@ -381,3 +375,47 @@ console.log( oGameData.checkForDraw() );
    // oGameData.timerId = null;
 
 //}  
+
+
+
+
+
+
+
+
+
+//const boxTarget = event.target;
+//const cellvarde = parseInt(boxTarget.getAttribute('data-id'));
+    
+    
+/*if (boxTarget.innerText === ""){
+
+     // nedan för att bestämma spelare, ifall currentPlayer är playerOne retunera playerTwo annars ifall currentPlayer är tom retunera playerOne annars PlayerOne
+    this.currentPlayer = this.currentPlayer === this.playerOne ? this.playerTwo : this.currentPlayer === "" ? this.playerOne : this.playerOne;
+    this.boxValue[cellvarde].innerText = this.currentPlayer;
+    this.gameField[cellvarde] = this.currentPlayer;
+    boxTarget.style.backgroundColor = this.currentPlayer === this.playerOne ? this.colorPlayerOne.value : this.colorPlayerTwo.value;
+    
+
+    //else ifall boxen bär på värde redan
+} else {
+    console.log("boxen bär redan värde!.")
+}
+
+
+//deklarerar konstanten vinnare som refererar till funktionen Spelarevann
+const vinnare = this.checkForGameOver();
+    
+if(vinnare === 1 || vinnare === 2) { //ifall checkForGameOver retunerar 1 eller 2 (spelare 1 eller spelare 2) så console loggas respektiv siffra
+    console.log(vinnare);
+}
+
+else if (vinnare === 3){  //ifall ingen vinnare retuneras från checkForGameOver så console loggas siffran 3
+    console.log(vinnare)
+}
+
+
+console.log("TEST:", this.boxValue)
+console.log("TID:", boxTarget.getAttribute('data-id'))
+console.log("ARRAY:", this.gameField)
+console.log(boxTarget); */
