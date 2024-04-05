@@ -166,7 +166,7 @@ function dang(){  // funktionen sker efter att "starta spelet!" knappen klickas 
     }
     
     
-    document.querySelector('#jumbotron h1').textContent = `Aktuell spelare är ${playerName}`; //gör det möjligt för spelarna att se vems tur det är genom att kolla på h1
+    document.querySelector('#jumbotron h1').textContent = `Aktuell spelare är ${oGameData.currentPlayer === oGameData.playerOne ? oGameData.nickNamePlayerOne : oGameData.nickNamePlayerTwo}`; //gör det möjligt för spelarna att se vems tur det är genom att kolla på h1
 }
 
 
